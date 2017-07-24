@@ -1620,6 +1620,9 @@ func (r *Raft) installSnapshot(rpc RPC, req *InstallSnapshotRequest) {
 	// Update the lastApplied so we don't replay old logs
 	r.setLastApplied(req.LastLogIndex)
 
+	// Persist Last Applied index to FSM.
+	r.fsm.SetLastApplied(req.LastLogIndex)
+
 	// Update the last stable snapshot info
 	r.setLastSnapshot(req.LastLogIndex, req.LastLogTerm)
 
